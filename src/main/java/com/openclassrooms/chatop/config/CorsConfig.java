@@ -1,4 +1,4 @@
-package com.openclassrooms.chatop.security;
+package com.openclassrooms.chatop.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

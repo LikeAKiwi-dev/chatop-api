@@ -1,6 +1,7 @@
 package com.openclassrooms.chatop.entity;
 
 import jakarta.persistence.*;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,12 +15,15 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Setter
     @Column(length = 2000)
     private String message;
 
+    @Setter
     @Column(name = "user_id")
     private Integer userId;
 
+    @Setter
     @Column(name = "rental_id")
     private Integer rentalId;
 

@@ -20,4 +20,10 @@ public class GlobalExceptionHandler {
     public Map<String, String> badRequest(IllegalArgumentException ex) {
         return Map.of("message", ex.getMessage());
     }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleNotFound(ResourceNotFoundException ex) {
+        return Map.of("message", ex.getMessage());
+    }
 }

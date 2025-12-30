@@ -33,10 +33,12 @@ public class User {
     @Column(length = 255)
     private String password;
 
+    @Getter
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private Instant createdAt;
 
+    @Getter
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Instant updatedAt;
