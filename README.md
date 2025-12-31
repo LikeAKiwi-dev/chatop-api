@@ -16,9 +16,9 @@ Cloner le dépôt GitHub, puis construire le projet avec Maven.
 
 Commande à exécuter :
 
-git clone <URL_DU_REPO_GITHUB>  
+git clone https://github.com/LikeAKiwi-dev/chatop-api.git   
 cd chatop  
-mvn clean install
+./mvn clean install
 
 ## Installation de la base de données (MySQL)
 
@@ -108,7 +108,7 @@ Option 2 – Lancement via le Maven Wrapper
 Le projet peut également être lancé sans IDE, via le Maven Wrapper inclus dans le dépôt.
 
 ```bash
-./mvnw spring-boot:run
+./mvn spring-boot:run
 ```
 
 URL de l’API :
