@@ -5,6 +5,14 @@ import com.openclassrooms.chatop.dto.RentalUpdateRequest;
 import com.openclassrooms.chatop.dto.RentalsResponse;
 import com.openclassrooms.chatop.service.RentalMapper;
 import com.openclassrooms.chatop.service.RentalService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +29,8 @@ import java.math.BigDecimal;
 
 import java.util.List;
 
+@Tag(name = "Rentals")
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalController {
@@ -35,6 +45,31 @@ public class RentalController {
         this.fileStorageService = fileStorageService;
     }
 
+    @Operation(summary = "Lister les locations")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Liste des locations",
+            content = @Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            value = """
+            {
+              "rentals": [
+                {
+                  "id": 1,
+                  "name": "Appartement centre ville",
+                  "surface": 50,
+                  "price": 1200,
+                  "picture": "http://localhost:3001/uploads/appartement.jpg",
+                  "description": "Bel appartement lumineux",
+                  "owner_id": 2
+                }
+              ]
+            }
+            """
+                    )
+            )
+    )
     @GetMapping
     public RentalsResponse getAll() {
         String baseUrl = ServletUriComponentsBuilder
@@ -43,24 +78,44 @@ public class RentalController {
                 .toUriString();
 
         var rentals = rentalService.findAll().stream()
-                .map(r -> rentalMapper.toDto(r))
+                .map(rentalMapper::toDto)
                 .toList();
 
         return new RentalsResponse(rentals);
     }
 
+    @Operation(summary = "Détail d'une location")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Location trouvée"),
+            @ApiResponse(responseCode = "404", description = "Location non trouvée"),
+            @ApiResponse(responseCode = "401", description = "Non authentifié")
+    })
     @GetMapping("/{id}")
     public RentalResponse getById(@PathVariable Integer id) {
         return rentalMapper.toDto(rentalService.findByIdOrThrow(id));
     }
 
+    @Operation(summary = "Créer une location")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Location créée",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(
+                                    value = "{ \"message\": \"Rental created !\" }"
+                            )
+                    )
+            ),
+            @ApiResponse(responseCode = "400", description = "Données invalides")
+    })
     @PostMapping(consumes = "multipart/form-data")
     @ResponseStatus(HttpStatus.CREATED)
     public SimpleMessageResponse create(
-            @RequestParam("name") String name,
-            @RequestParam("surface") BigDecimal surface,
-            @RequestParam("price") BigDecimal price,
-            @RequestParam("description") String description,
+            @Parameter(example = "Appartement centre ville") @RequestParam("name") String name,
+            @Parameter(example = "50") @RequestParam("surface") BigDecimal surface,
+            @Parameter(example = "1200") @RequestParam("price") BigDecimal price,
+            @Parameter(example = "Bel appartement lumineux") @RequestParam("description") String description,
             @RequestParam("picture") MultipartFile picture,
             Authentication authentication
     ) {
@@ -81,6 +136,12 @@ public class RentalController {
         return new SimpleMessageResponse("Rental created !");
     }
 
+    @Operation(summary = "Mettre à jour une location")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Location mise à jour"),
+            @ApiResponse(responseCode = "404", description = "Location non trouvée"),
+            @ApiResponse(responseCode = "401", description = "Non authentifié")
+    })
     @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     @ResponseStatus(HttpStatus.OK)
     public SimpleMessageResponse updateMultipart(

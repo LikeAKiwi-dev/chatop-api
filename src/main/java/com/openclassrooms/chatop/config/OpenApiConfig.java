@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
         info = @Info(
                 title = "chatop API",
                 version = "1.0",
-                description = "API du portail chatop"
+                description = "API REST sécurisée par JWT pour la gestion des locations du portail Chatop"
         )
 )
 @SecurityScheme(
