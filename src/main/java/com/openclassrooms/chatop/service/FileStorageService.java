@@ -36,7 +36,7 @@ public class FileStorageService {
 
             // Redimension + compression
             Thumbnails.of(file.getInputStream())
-                    .size(960, 639)          // max width/height
+                    .size(640, 640)          // max width/height
                     .outputFormat("jpg")
                     .outputQuality(0.85)
                     .toFile(destination.toFile());
