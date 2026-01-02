@@ -34,9 +34,11 @@ Le schéma de la base de données est fourni sous forme d’un fichier SQL dans 
 
 Importer le fichier SQL fourni dans la base `chatop_db` à l’aide de l’outil de votre choix (MySQL, MySQL Workbench, phpMyAdmin, etc.).
 
+le fichier ce trouve dans src/main/resources/sql/script.sql
+
 Exemple en ligne de commande :
 
-mysql -u chatop_user -p chatop_db < fichier.sql
+mysql -u chatop_user -p chatop_db < src/main/resources/sql/script.sql
 
 Remplacer `fichier.sql` par le nom réel du fichier SQL fourni dans le projet.
 
@@ -130,6 +132,14 @@ Swagger permet de consulter toutes les routes et de tester l’API directement.
 ## Authentification JWT
 
 Certaines routes sont protégées par un token JWT.
+
+Pour que ce token fonctionne correctement l'application utilise une variable d'environnement :
+
+JWT_SECRET 
+
+*Une chaine de caractère de minimum 32 caractères*
+
+*À ajouter au même endroit choisi pour les variables de la base de données.*
 
 Procédure :
 
