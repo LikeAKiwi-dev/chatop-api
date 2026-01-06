@@ -40,8 +40,6 @@ Exemple en ligne de commande :
 
 mysql -u chatop_user -p chatop_db < src/main/resources/sql/script.sql
 
-Remplacer `fichier.sql` par le nom réel du fichier SQL fourni dans le projet.
-
 ### 3) Configurer les variables d’environnement
 
 L’application utilise des variables d’environnement pour la connexion à la base de données.
